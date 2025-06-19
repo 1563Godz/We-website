@@ -12,12 +12,13 @@
         <form id="reviewForm">
             <label for="review">กรอกข้อความรีวิว:</label><br>
             <textarea name="review" id="review" rows="4" cols="50"></textarea><br>
-            <button type="submit" class="btn">วิเคราะห์</button>
+            <button type="submit" class="btn" class="container">วิเคราะห์</button>
         </form>
 
         <p id="prediction-result">ผลลัพธ์จะแสดงตรงนี้</p>
 
-        <a href="/" class="btn back-btn">← กลับหน้าหลัก</a>
+        <a href="/" class="btn back-btn" class="container">← กลับหน้าหลัก</a>
+        
     </div>
 </body>
 </html>
@@ -47,16 +48,27 @@ h1 {
 textarea {
     width: 100%;
     max-width: 100%;
+    min-height: 120px;
+    padding: 12px 14px;
     font-size: 1rem;
-    padding: 10px;
-    margin-top: 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    font-family: inherit;
+    border: 1.5px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fdfdfd;
+}
+
+textarea:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+    background-color: #fff;
 }
 
 button.btn, a.btn {
     display: inline-block;
-    padding: 10px 16px;
+    padding: 10px 20px;
     margin-top: 15px;
     font-size: 1rem;
     color: white;
@@ -66,6 +78,7 @@ button.btn, a.btn {
     text-decoration: none;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    max-width: 100%;
 }
 
 button.btn:hover, a.btn:hover {
@@ -84,6 +97,36 @@ button.btn:hover, a.btn:hover {
     font-weight: bold;
     margin-top: 20px;
     color: #333;
+}
+@media (max-width: 600px) {
+    .form-group,
+    .btn-group {
+        text-align: center;
+    }
+
+    .container {
+        margin: 20px 10px;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    textarea {
+        font-size: 0.95rem;
+    }
+
+    button.btn,a.btn {
+        width: auto;
+        max-width: 90%;
+        font-size: 0.95rem;
+    }
+
+    #prediction-result {
+        font-size: 0.95rem;
+        text-align: center;
+    }
 }
 </style>
 
