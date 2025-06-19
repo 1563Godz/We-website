@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>วิเคราะห์ประโยค</title>
+
+</head>
+<body>
+    <div class="container">
+        <h1>ระบบวิเคราะห์ความเห็น</h1>
+
+        <form id="reviewForm">
+            <label for="review">กรอกข้อความรีวิว:</label><br>
+            <textarea name="review" id="review" rows="4" cols="50"></textarea><br>
+            <button type="submit" class="btn">วิเคราะห์</button>
+        </form>
+
+        <p id="prediction-result">ผลลัพธ์จะแสดงตรงนี้</p>
+
+        <a href="/" class="btn back-btn">← กลับหน้าหลัก</a>
+    </div>
+</body>
+</html>
+
+<style>
+body {
+    font-family: sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+textarea {
+    width: 100%;
+    max-width: 100%;
+    font-size: 1rem;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button.btn, a.btn {
+    display: inline-block;
+    padding: 10px 16px;
+    margin-top: 15px;
+    font-size: 1rem;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.btn:hover, a.btn:hover {
+    background-color: #0056b3;
+}
+
+.back-btn {
+    background-color: #6c757d;
+}
+
+.back-btn:hover {
+    background-color: #5a6268;
+}
+
+#prediction-result {
+    font-weight: bold;
+    margin-top: 20px;
+    color: #333;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("#reviewForm");
+    const resultBox = document.querySelector("#prediction-result");
+
+    async function predictReview(review) {
+        try {
+            const response = await fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ review })
+            });
+
+            const data = await response.json();
+            resultBox.textContent = `ผลลัพธ์: ${data.prediction || "ไม่สามารถประมวลผลได้"}`;
+        } catch (error) {
+            console.error("Error:", error);
+            resultBox.textContent = "เกิดข้อผิดพลาดในการประมวลผล";
+        }
+    }
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const review = form.review.value.trim();
+        if (!review) {
+            resultBox.textContent = "กรุณากรอกข้อความก่อน";
+            return;
+        }
+        predictReview(review);
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const reviewFromURL = params.get("review");
+    if (reviewFromURL) {
+        form.review.value = reviewFromURL;
+        predictReview(reviewFromURL);
+    }
+});
+</script>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEAM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <div class="header">
+        <div id="team-text"></div>
+    </div>
+
+    <nav class="menu">
+        <div class="menu-center">
+            <a href="#project">Project</a>
+            <a href="#about">About Us</a>
+        </div>
+        <div id="clock"></div> 
+    </nav>
+
+    <section id="project" class="section">
+        <h2>Project</h2>
+        <div class="project-container">
+            <div class="project-card">
+                <h3>Project 1</h3>
+                <a href="{{ url_for('sentences_check') }}">Sentences Checker</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <h2>About Us</h2>
+        <div class="project-container">
+            <div class="project-card">
+                <p>ข้อมูลเกี่ยวกับทีมของเรา...</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>Credit: Moth | PhuKhao | Kong | Pam</p>
+    </footer>
+</body>
+</html>
