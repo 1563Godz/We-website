@@ -1,172 +1,198 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <title>วิเคราะห์ประโยค</title>
-
+  <meta charset="UTF-8">
+  <title>วิเคราะห์ประโยค</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
 </head>
 <body>
-    <div class="container">
-        <h1>ระบบวิเคราะห์ความเห็น</h1>
+  <div class="container">
+    <h1>ระบบวิเคราะห์ความเห็น</h1>
 
-        <form id="reviewForm">
-            <label for="review">กรอกข้อความรีวิว:</label><br>
-            <textarea name="review" id="review" rows="4" cols="50"></textarea><br>
-            <button type="submit" class="btn" class="container">วิเคราะห์</button>
-        </form>
+    <form id="reviewForm">
+      <label for="review">กรอกข้อความรีวิว:</label>
+      <textarea name="review" id="review"></textarea><br>
+      <button type="submit" class="btn">วิเคราะห์</button>
+    </form>
 
-        <p id="prediction-result">ผลลัพธ์จะแสดงตรงนี้</p>
+    <div id="loading-spinner"></div>
 
-        <a href="/" class="btn back-btn" class="container">← กลับหน้าหลัก</a>
-        
-    </div>
-</body>
-</html>
+    <p id="prediction-result">ผลลัพธ์จะแสดงตรงนี้</p>
 
-<style>
-body {
-    font-family: sans-serif;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
-}
+    <a href="/" class="btn back-btn">← กลับหน้าหลัก</a>
+  </div>
 
-.container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 20px;
-    background: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    border-radius: 8px;
-}
-
-h1 {
-    color: #333;
-    text-align: center;
-}
-
-textarea {
-    width: 100%;
-    max-width: 100%;
-    min-height: 120px;
-    padding: 12px 14px;
-    font-size: 1rem;
-    font-family: inherit;
-    border: 1.5px solid #ccc;
-    border-radius: 6px;
-    outline: none;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: #fdfdfd;
-}
-
-textarea:focus {
-    border-color: #007BFF;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-    background-color: #fff;
-}
-
-button.btn, a.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    margin-top: 15px;
-    font-size: 1rem;
-    color: white;
-    background-color: #007BFF;
-    border: none;
-    border-radius: 4px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    max-width: 100%;
-}
-
-button.btn:hover, a.btn:hover {
-    background-color: #0056b3;
-}
-
-.back-btn {
-    background-color: #6c757d;
-}
-
-.back-btn:hover {
-    background-color: #5a6268;
-}
-
-#prediction-result {
-    font-weight: bold;
-    margin-top: 20px;
-    color: #333;
-}
-@media (max-width: 600px) {
-    .form-group,
-    .btn-group {
-        text-align: center;
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
     }
 
     .container {
-        margin: 20px 10px;
-        padding: 15px;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
     }
 
     h1 {
-        font-size: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
     }
 
     textarea {
-        font-size: 0.95rem;
+      width: 100%;
+      max-width: 100%;
+      min-height: 120px;
+      padding: 12px 14px;
+      font-size: 1rem;
+      font-family: inherit;
+      border: 1.5px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      background-color: #fdfdfd;
     }
 
-    button.btn,a.btn {
-        width: auto;
-        max-width: 90%;
-        font-size: 0.95rem;
+    textarea:focus {
+      border-color: #007BFF;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+      background-color: #fff;
+    }
+
+    button.btn, a.btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 15px;
+      font-size: 1rem;
+      color: white;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      max-width: 100%;
+    }
+
+    button.btn:hover, a.btn:hover {
+      background-color: #0056b3;
+    }
+
+    .back-btn {
+      background-color: #6c757d;
+    }
+
+    .back-btn:hover {
+      background-color: #5a6268;
     }
 
     #prediction-result {
+      font-weight: bold;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    #loading-spinner {
+      margin: 20px auto;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #ccc;
+      border-top: 4px solid #007BFF;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px 10px;
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      textarea {
+        font-size: 0.95rem;
+      }
+
+      button.btn, a.btn {
+        width: auto;
+        max-width: 90%;
+        font-size: 0.95rem;
+        display: inline-block;
+      }
+
+      #prediction-result {
         font-size: 0.95rem;
         text-align: center;
+      }
     }
-}
-</style>
+  </style>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector("#reviewForm");
-    const resultBox = document.querySelector("#prediction-result");
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.querySelector("#reviewForm");
+      const resultBox = document.querySelector("#prediction-result");
+      const spinner = document.querySelector("#loading-spinner");
 
-    async function predictReview(review) {
+      async function predictReview(review) {
+        spinner.style.display = "block";
+        resultBox.textContent = "";
+
         try {
-            const response = await fetch("/predict", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ review })
-            });
+          const response = await fetch("/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ review })
+          });
 
-            const data = await response.json();
-            resultBox.textContent = `ผลลัพธ์: ${data.prediction || "ไม่สามารถประมวลผลได้"}`;
+          const data = await response.json();
+          resultBox.textContent = `ผลลัพธ์: ${data.prediction || "ไม่สามารถประมวลผลได้"}`;
         } catch (error) {
-            console.error("Error:", error);
-            resultBox.textContent = "เกิดข้อผิดพลาดในการประมวลผล";
+          console.error("Error:", error);
+          resultBox.textContent = "เกิดข้อผิดพลาดในการประมวลผล";
+        } finally {
+          spinner.style.display = "none";
         }
-    }
+      }
 
-    form.addEventListener("submit", function (event) {
+      form.addEventListener("submit", function (event) {
         event.preventDefault();
         const review = form.review.value.trim();
         if (!review) {
-            resultBox.textContent = "กรุณากรอกข้อความก่อน";
-            return;
+          resultBox.textContent = "กรุณากรอกข้อความก่อน";
+          return;
         }
         predictReview(review);
-    });
+      });
 
-    const params = new URLSearchParams(window.location.search);
-    const reviewFromURL = params.get("review");
-    if (reviewFromURL) {
+      const params = new URLSearchParams(window.location.search);
+      const reviewFromURL = params.get("review");
+      if (reviewFromURL) {
         form.review.value = reviewFromURL;
         predictReview(reviewFromURL);
-    }
-});
-</script>
+      }
+    });
+  </script>
+  
+</body>
 </html>
