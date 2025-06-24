@@ -1,3 +1,7 @@
+html, body {
+    overflow-x: hidden;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -125,17 +129,53 @@ body {
 }
 
 .project-card {
-    background: white;
-    padding: 20px;
-    width: 280px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background: linear-gradient(135deg, #fffbe6 0%, #ffe066 100%);
+    padding: 28px 24px 32px 24px;
+    width: 320px;
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #ffe066;
+    position: relative;
+    overflow: hidden;
 }
 
 .project-card:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    transform: translateY(-8px) scale(1.07);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    background: linear-gradient(135deg, #fffbe6 0%, #ffd700 100%);
+    border-color: #ffd700;
+}
+
+.project-card h3 {
+    font-size: 1.7rem;
+    font-weight: bold;
+    margin-bottom: 18px;
+    color: #222;
+    letter-spacing: 1px;
+}
+
+.project-card a {
+    background: #222;
+    color: #ffe066;
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+}
+
+.project-card a:hover {
+    background: #ffe066;
+    color: #222;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.16);
 }
 
 /* About Us Section */
@@ -198,7 +238,7 @@ body {
     }
 }
 
- /* Credits */
+/* Credits */
 .footer {
     width: 100%;
     color: rgb(0, 0, 0);
@@ -240,4 +280,105 @@ body {
     color: #d9534f;
     border-color: #d9534f;
     background: #fbeae5;
+}
+
+.theme-toggle-btn {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 10000;
+    background: #222; /* ปุ่มสีดำในโหมดสว่าง */
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 12px rgba(79,140,255,0.13);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+}
+.theme-toggle-btn:hover {
+    background: #444;
+    color: #ffe066;
+}
+body.dark-mode .theme-toggle-btn {
+    background: #fff !important; /* ปุ่มสีขาวในโหมดมืด */
+    color: #23272f !important;
+    border: 1.5px solid #23272f;
+}
+body.dark-mode .theme-toggle-btn:hover {
+    background: #ffe066 !important;
+    color: #23272f !important;
+}
+@media (max-width: 600px) {
+    .theme-toggle-btn {
+        right: 8px;
+        bottom: 8px;
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
+    }
+}
+body.dark-mode {
+    background-color: #181818;
+    color: #f0f0f0;
+}
+body.dark-mode, body.dark-mode * {
+    color: #fff !important;
+}
+body.dark-mode .header,
+body.dark-mode .project-card,
+body.dark-mode .about-container,
+body.dark-mode .footer,
+body.dark-mode #result-container {
+    background: #232323 !important;
+    color: #f0f0f0 !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+body.dark-mode .menu {
+    background: #333 !important;
+}
+body.dark-mode .menu a {
+    color: #ffe066;
+}
+body.dark-mode .menu a:hover {
+    color: #fff;
+}
+body.dark-mode .result-box {
+    background: #232323;
+    color: #ffe066;
+    border-color: #ffe066;
+}
+body.dark-mode .result-box.positive {
+    background: #1e2d1e;
+    color: #6fff8f;
+    border-color: #6fff8f;
+}
+body.dark-mode .result-box.negative {
+    background: #3a1e1e;
+    color: #ff6f6f;
+    border-color: #ff6f6f;
+}
+body.dark-mode .project-card {
+    background: linear-gradient(135deg, #232323 0%, #444 100%) !important;
+    border-color: #ffe066;
+    color: #fff !important;
+}
+body.dark-mode .project-card h3 {
+    color: #ffe066;
+}
+body.dark-mode .project-card a {
+    background: #ffe066;
+    color: #232323;
+}
+body.dark-mode .project-card a:hover {
+    background: #232323;
+    color: #ffe066;
+}
+body, .header, .project-card, .about-container, .footer, #result-container, .menu, .result-box, .theme-toggle-btn {
+    transition: background 1.2s, color 1.2s, border-color 1.2s, box-shadow 1.2s, filter 1.2s;
 }

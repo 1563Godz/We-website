@@ -2,149 +2,332 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>วิเคราะห์ประโยค</title>
+  <title>ระบบวิเคราะห์ความเห็น</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+  <!-- Google Fonts for Thai -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <h1>ระบบวิเคราะห์ความเห็น</h1>
 
     <form id="reviewForm">
-      <label for="review">กรอกข้อความรีวิว:</label>
-      <textarea name="review" id="review"></textarea><br>
-      <button type="submit" class="btn">วิเคราะห์</button>
+      <label for="review">กรอกข้อความ</label>
+      <textarea name="review" id="review" placeholder="พิมพ์ข้อความที่นี่..."></textarea><br>
+      <button type="submit" class="btn"><span class="material-symbols-outlined">search</span> วิเคราะห์</button>
     </form>
 
-    <div id="loading-spinner"></div>
+    <div id="loading-spinner-overlay">
+      <div id="loading-spinner"></div>
+    </div>
 
     <p id="prediction-result">ผลลัพธ์จะแสดงตรงนี้</p>
 
-    <a href="/" class="btn back-btn">← กลับหน้าหลัก</a>
+    <a href="/" class="btn back-btn"><span class="material-symbols-outlined">arrow_back</span> กลับหน้าหลัก</a>
   </div>
 
+  <button id="toggle-theme-btn" class="theme-toggle-btn" title="Toggle Light/Dark Mode">
+      🌙
+  </button>
+  <!-- Google Material Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
   <style>
-    body {
-      font-family: sans-serif;
-      background-color: #f5f5f5;
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
-
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
-    }
-
-    h1 {
-      color: #333;
-      text-align: center;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-
-    textarea {
-      width: 100%;
-      max-width: 100%;
-      min-height: 120px;
-      padding: 12px 14px;
-      font-size: 1rem;
-      font-family: inherit;
-      border: 1.5px solid #ccc;
-      border-radius: 6px;
-      outline: none;
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: linear-gradient(120deg, #e0e7ff 0%, #f5f5f5 100%);
+      min-height: 100vh;
+      min-width: 100vw;
       box-sizing: border-box;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
-      background-color: #fdfdfd;
     }
 
-    textarea:focus {
-      border-color: #007BFF;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
-      background-color: #fff;
+    #loading-spinner-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255,255,255,0.55);
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s;
     }
-
-    button.btn, a.btn {
-      display: inline-block;
-      padding: 10px 20px;
-      margin-top: 15px;
-      font-size: 1rem;
-      color: white;
-      background-color: #007BFF;
-      border: none;
-      border-radius: 4px;
-      text-decoration: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      max-width: 100%;
-    }
-
-    button.btn:hover, a.btn:hover {
-      background-color: #0056b3;
-    }
-
-    .back-btn {
-      background-color: #6c757d;
-    }
-
-    .back-btn:hover {
-      background-color: #5a6268;
-    }
-
-    #prediction-result {
-      font-weight: bold;
-      margin-top: 20px;
-      color: #333;
+    #loading-spinner-overlay.active {
+      display: flex;
     }
 
     #loading-spinner {
-      margin: 20px auto;
-      width: 40px;
-      height: 40px;
-      border: 4px solid #ccc;
-      border-top: 4px solid #007BFF;
+      width: 60px;
+      height: 60px;
+      border: 6px solid #e3eaff;
+      border-top: 6px solid #4f8cff;
       border-radius: 50%;
-      animation: spin 1s linear infinite;
-      display: none;
+      animation: spin 0.8s linear infinite;
+      background: white;
+      box-shadow: 0 2px 16px rgba(79,140,255,0.13);
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    @media (max-width: 600px) {
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 48px auto 0 auto;
+      /* กลับมาใช้ margin-top เพื่อจัดกลางแนวตั้งใน desktop */
+      padding: 32px 24px 28px 24px;
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 1.5px 6px rgba(0,0,0,0.08);
+      border-radius: 18px;
+      border: 1.5px solid #e3e3e3;
+      position: relative;
+      animation: fadeIn 0.7s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: #2d3a4a;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 28px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #444;
+      font-size: 1.08rem;
+      text-align: left;
+      width: 100%;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 14px 16px;
+      font-size: 1.08rem;
+      font-family: inherit;
+      border: 1.7px solid #bfcfff;
+      border-radius: 8px;
+      outline: none;
+      box-sizing: border-box;
+      background-color: #fafdff;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      resize: vertical;
+      margin-bottom: 8px;
+      box-shadow: 0 1.5px 6px rgba(0,0,0,0.04);
+    }
+
+    textarea:focus {
+      border-color: #4f8cff;
+      box-shadow: 0 0 0 3px rgba(79,140,255,0.13);
+      background-color: #fff;
+    }
+
+    button.btn, a.btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 11px 26px;
+      margin-top: 18px;
+      font-size: 1.08rem;
+      color: white;
+      background: linear-gradient(90deg, #4f8cff 60%, #007BFF 100%);
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.1s;
+      box-shadow: 0 2px 8px rgba(79,140,255,0.08);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      outline: none;
+      user-select: none;
+    }
+
+    button.btn:active, a.btn:active {
+      transform: scale(0.97);
+      box-shadow: 0 1px 4px rgba(79,140,255,0.10);
+    }
+
+    button.btn:hover, a.btn:hover {
+      background: linear-gradient(90deg, #007BFF 60%, #4f8cff 100%);
+      box-shadow: 0 4px 16px rgba(79,140,255,0.13);
+    }
+
+    .back-btn {
+      background: linear-gradient(90deg, #6c757d 60%, #5a6268 100%);
+      margin-left: 0;
+      margin-top: 12px;
+    }
+    .back-btn:hover {
+      background: linear-gradient(90deg, #5a6268 60%, #6c757d 100%);
+    }
+
+    .material-symbols-outlined {
+      font-size: 1.3em;
+      vertical-align: middle;
+      margin-right: 2px;
+    }
+
+    #prediction-result {
+      font-weight: bold;
+      margin-top: 26px;
+      color: #2d3a4a;
+      font-size: 1.13rem;
+      text-align: center;
+      min-height: 32px;
+      letter-spacing: 0.2px;
+      background: #f3f7ff;
+      border-radius: 7px;
+      padding: 10px 0 10px 0;
+      box-shadow: 0 1.5px 6px rgba(0,0,0,0.04);
+      width: 100%;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(120deg, #23272f 0%, #181a20 100%) !important;
+      color: #e3e3e3;
+    }
+    body.dark-mode .container {
+      background: rgba(30,34,40,0.98);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.32), 0 1.5px 6px rgba(0,0,0,0.18);
+      border: 1.5px solid #23272f;
+    }
+    body.dark-mode h1, body.dark-mode label, body.dark-mode #prediction-result {
+      color: #e3e3e3;
+    }
+    body.dark-mode textarea {
+      background-color: #23272f;
+      color: #e3e3e3;
+      border-color: #4f8cff;
+    }
+    body.dark-mode textarea:focus {
+      background-color: #23272f;
+      box-shadow: 0 0 0 3px rgba(79,140,255,0.18);
+    }
+    body.dark-mode button.btn, body.dark-mode a.btn {
+      background: linear-gradient(90deg, #4f8cff 60%, #007BFF 100%);
+      color: #fff;
+      border: none;
+    }
+    body.dark-mode button.btn:hover, body.dark-mode a.btn:hover {
+      background: linear-gradient(90deg, #007BFF 60%, #4f8cff 100%);
+      color: #fff;
+      border: none;
+    }
+    body.dark-mode #prediction-result {
+      background: #23272f;
+      box-shadow: 0 1.5px 6px rgba(0,0,0,0.18);
+    }
+    body.dark-mode #loading-spinner {
+      background: #23272f;
+      border: 6px solid #23272f;
+      border-top: 6px solid #4f8cff;
+    }
+
+    .theme-toggle-btn {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10000;
+      background: #222; /* ปุ่มสีดำในโหมดสว่าง */
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 38px;
+      height: 38px;
+      font-size: 1.3rem;
+      box-shadow: 0 2px 12px rgba(79,140,255,0.13);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .theme-toggle-btn:hover {
+      background: #444;
+      color: #ffe066;
+    }
+    body.dark-mode .theme-toggle-btn {
+      background: #fff !important; /* ปุ่มสีขาวในโหมดมืด */
+      color: #23272f !important;
+      border: 1.5px solid #23272f;
+    }
+    body.dark-mode .theme-toggle-btn:hover {
+      background: #ffe066 !important;
+      color: #23272f !important;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
       .container {
-        margin: 20px 10px;
-        padding: 15px;
+        margin: 0;
+        padding: 13px 3vw 16px 3vw;
+        max-width: 95vw;
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
       }
-
       h1 {
-        font-size: 20px;
-      }
-
-      textarea {
-        font-size: 0.95rem;
-      }
-
-      button.btn, a.btn {
-        width: auto;
-        max-width: 90%;
-        font-size: 0.95rem;
-        display: inline-block;
-      }
-
-      #prediction-result {
-        font-size: 0.95rem;
+        font-size: 1.1rem;
         text-align: center;
       }
+      textarea {
+        font-size: 0.98rem;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+      }
+      button.btn, a.btn {
+        width: 100%;
+        max-width: 100%;
+        font-size: 0.98rem;
+        padding: 10px 0;
+        box-sizing: border-box;
+        justify-content: center;
+      }
+      #prediction-result {
+        font-size: 0.98rem;
+        padding: 8px 0;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      .theme-toggle-btn {
+        right: 8px;
+        bottom: 8px;
+        width: 32px;
+        height: 32px;
+        font-size: 1.1rem;
+      }
+    }
+
+    body.theme-transition,
+    body.theme-transition * {
+      transition: background 1.2s cubic-bezier(.7,.2,.2,1), color 1.2s cubic-bezier(.7,.2,.2,1), border-color 1.2s cubic-bezier(.7,.2,.2,1), box-shadow 1.2s cubic-bezier(.7,.2,.2,1), background-color 1.2s cubic-bezier(.7,.2,.2,1), background-image 1.2s cubic-bezier(.7,.2,.2,1);
     }
   </style>
 
@@ -152,26 +335,35 @@
     document.addEventListener("DOMContentLoaded", function () {
       const form = document.querySelector("#reviewForm");
       const resultBox = document.querySelector("#prediction-result");
-      const spinner = document.querySelector("#loading-spinner");
+      const spinnerOverlay = document.querySelector("#loading-spinner-overlay");
+
+      // เพิ่มเสียง
+      const dingSound = new Audio("/static/ding.mp3");
 
       async function predictReview(review) {
-        spinner.style.display = "block";
+        spinnerOverlay.classList.add("active");
         resultBox.textContent = "";
-
+        const minDelay = 1500; // 1.5 seconds
+        const delayPromise = new Promise(resolve => setTimeout(resolve, minDelay));
         try {
-          const response = await fetch("/predict", {
+          const fetchPromise = fetch("/predict", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ review })
-          });
+          }).then(response => response.json());
 
-          const data = await response.json();
+          const [data] = await Promise.all([
+            fetchPromise,
+            delayPromise
+          ]);
           resultBox.textContent = `ผลลัพธ์: ${data.prediction || "ไม่สามารถประมวลผลได้"}`;
+          // เล่นเสียงติ๊งเมื่อได้ผลลัพธ์
+          dingSound.play();
         } catch (error) {
           console.error("Error:", error);
           resultBox.textContent = "เกิดข้อผิดพลาดในการประมวลผล";
         } finally {
-          spinner.style.display = "none";
+          spinnerOverlay.classList.remove("active");
         }
       }
 
@@ -191,6 +383,21 @@
         form.review.value = reviewFromURL;
         predictReview(reviewFromURL);
       }
+
+      // Theme toggle (แบบเดียวกับ index.html)
+      const btn = document.getElementById('toggle-theme-btn');
+      btn.addEventListener('click', function() {
+          document.body.classList.add('theme-transition');
+          document.body.classList.toggle('dark-mode');
+          if(document.body.classList.contains('dark-mode')) {
+              btn.textContent = '☀️';
+          } else {
+              btn.textContent = '🌙';
+          }
+          setTimeout(() => {
+              document.body.classList.remove('theme-transition');
+          }, 600); // match CSS transition duration
+      });
     });
   </script>
   
