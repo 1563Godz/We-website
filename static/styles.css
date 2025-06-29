@@ -6,8 +6,83 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f0f0f0;
+    background-color: #f6f7fb;
 }
+
+/* --- THEME CONSISTENCY IMPROVEMENTS --- */
+:root {
+    --main-bg: #f6f7fb;
+    --main-text: #23272f;
+    --accent: #2193b0;
+    --accent-light: #6dd5ed;
+    --card-bg: #fff;
+    --card-border: #90caf9;
+    --footer-bg: #f6f7fb;
+    --footer-text: #23272f;
+    --about-bg: #fff;
+    --about-text: #23272f;
+}
+body {
+    background-color: var(--main-bg);
+    color: var(--main-text);
+}
+.project-card, .about-container, .footer {
+    background: var(--card-bg);
+    color: var(--main-text);
+    border-color: var(--card-border);
+}
+.footer {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+}
+.about-container {
+    background: var(--about-bg);
+    color: var(--about-text);
+}
+.project-title, .project-card h3 {
+    color: var(--accent);
+}
+.project-btn, .project-card a {
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+    color: #fff;
+}
+.project-btn:hover:not(.disabled), .project-card a:hover {
+    background: linear-gradient(90deg, var(--accent-light) 0%, var(--accent) 100%);
+    color: var(--accent);
+}
+
+body.dark-mode {
+    --main-bg: #181818;
+    --main-text: #f0f0f0;
+    --accent: #90caf9;
+    --accent-light: #274472;
+    --card-bg: #232323;
+    --card-border: #42a5f5;
+    --footer-bg: #232323;
+    --footer-text: #f0f0f0;
+    --about-bg: #232323;
+    --about-text: #f0f0f0;
+}
+body.dark-mode .project-title, body.dark-mode .project-card h3 {
+    color: var(--accent);
+}
+body.dark-mode .project-btn, body.dark-mode .project-card a {
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+    color: #232f3e;
+}
+body.dark-mode .project-btn:hover:not(.disabled), body.dark-mode .project-card a:hover {
+    background: linear-gradient(90deg, var(--accent-light) 0%, var(--accent) 100%);
+    color: var(--accent);
+}
+body.dark-mode .footer {
+    background: var(--footer-bg);
+    color: var(--footer-text);
+}
+body.dark-mode .about-container {
+    background: var(--about-bg);
+    color: var(--about-text);
+}
+/* --- END THEME CONSISTENCY IMPROVEMENTS --- */
 
 /* Header */
 .header {
@@ -123,59 +198,135 @@ body {
 /* Project Section */
 .project-container {
     display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
     justify-content: center;
-    gap: 30px;
-    margin-top: 50px;
+    margin-top: 2rem;
 }
 
 .project-card {
-    background: linear-gradient(135deg, #fffbe6 0%, #ffe066 100%);
+    background: linear-gradient(135deg, #e3f0ff 0%, #b3d8ff 100%);
     padding: 28px 24px 32px 24px;
     width: 320px;
     border-radius: 18px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-    transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+    transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.45s, background 0.45s;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 2px solid #ffe066;
+    border: 2px solid #90caf9;
     position: relative;
     overflow: hidden;
 }
 
+.project-card.enhanced-card {
+    background: var(--card-bg, #fff);
+    border-radius: 1.5rem;
+    box-shadow: 0 4px 24px rgba(33,147,176,0.10), 0 1.5px 6px rgba(33,147,176,0.08);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    max-width: 320px;
+    min-width: 260px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
 .project-card:hover {
-    transform: translateY(-8px) scale(1.07);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
-    background: linear-gradient(135deg, #fffbe6 0%, #ffd700 100%);
-    border-color: #ffd700;
+    transform: translateY(-12px) scale(1.09) rotate(-1deg);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.22);
+    background: linear-gradient(135deg, #d0e7ff 0%, #90caf9 100%);
+    border-color: #42a5f5;
+}
+
+.project-card.enhanced-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.10);
+}
+
+.project-icon.icon-circle {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+    margin: 0 auto 1rem auto;
+    box-shadow: 0 2px 8px rgba(33,147,176,0.15);
+}
+
+.project-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #2193b0;
+}
+
+.project-desc {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 1.2rem;
+    min-height: 56px;
+}
+
+.project-btn {
+    display: inline-block;
+    padding: 0.6rem 1.4rem;
+    background: linear-gradient(90deg, #2193b0 0%, #6dd5ed 100%);
+    color: #fff;
+    border: none;
+    border-radius: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(33,147,176,0.10);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+
+.project-btn:hover:not(.disabled) {
+    background: linear-gradient(90deg, #6dd5ed 0%, #2193b0 100%);
+    box-shadow: 0 4px 16px rgba(33,147,176,0.18);
+    transform: translateY(-2px) scale(1.04);
+}
+
+.project-btn.disabled, .project-btn[aria-disabled="true"] {
+    background: #ccc;
+    color: #888;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 .project-card h3 {
-    font-size: 1.7rem;
-    font-weight: bold;
-    margin-bottom: 18px;
-    color: #222;
-    letter-spacing: 1px;
+    color: #1565c0;
 }
 
 .project-card a {
-    background: #222;
-    color: #ffe066;
-    padding: 10px 28px;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    margin-top: 10px;
-    letter-spacing: 0.5px;
+    background: #1976d2;
+    color: #fff;
+    transition: background 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
 .project-card a:hover {
-    background: #ffe066;
-    color: #222;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+    background: #fff;
+    color: #1976d2;
+}
+
+/* Project Card Icon */
+.project-card .project-icon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    transition: color 0.4s;
+}
+
+/* Project Card Description */
+.project-card .project-desc {
+    font-size: 1.08rem;
+    color: #555;
+    margin-bottom: 18px;
+    transition: color 0.4s;
 }
 
 /* About Us Section */
@@ -193,6 +344,14 @@ body {
     flex-direction: column;
 }
 
+/* About Card Centering and Sizing */
+.about-container-center {
+    justify-content: center;
+}
+.about-card-center {
+    max-width: 340px;
+    margin: 0 auto;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -224,8 +383,8 @@ body {
     }
 
     .project-container {
-        flex-wrap: wrap; 
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
     }
 
     .project-card {
@@ -235,6 +394,17 @@ body {
 
     .about-container {
         max-width: 90%;
+    }
+}
+
+@media (max-width: 700px) {
+    .project-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .project-card.enhanced-card {
+        max-width: 95vw;
+        min-width: 0;
     }
 }
 
@@ -364,20 +534,20 @@ body.dark-mode .result-box.negative {
     border-color: #ff6f6f;
 }
 body.dark-mode .project-card {
-    background: linear-gradient(135deg, #232323 0%, #444 100%) !important;
-    border-color: #ffe066;
-    color: #fff !important;
+    background: linear-gradient(135deg, #232f3e 0%, #274472 100%) !important;
+    border-color: #42a5f5;
+    color: #e3f0ff !important;
 }
 body.dark-mode .project-card h3 {
-    color: #ffe066;
+    color: #90caf9;
 }
 body.dark-mode .project-card a {
-    background: #ffe066;
-    color: #232323;
+    background: #90caf9;
+    color: #232f3e;
 }
 body.dark-mode .project-card a:hover {
-    background: #232323;
-    color: #ffe066;
+    background: #232f3e;
+    color: #90caf9;
 }
 body, .header, .project-card, .about-container, .footer, #result-container, .menu, .result-box, .theme-toggle-btn {
     transition: background 1.2s, color 1.2s, border-color 1.2s, box-shadow 1.2s, filter 1.2s;
