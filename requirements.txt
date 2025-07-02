@@ -1,7 +1,0 @@
-flask
-gunicorn
-joblib
-scikit-learn
-pillow
-numpy
-tensorflow
