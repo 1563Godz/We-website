@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>HDR AI Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        input[type="file"] {
+            margin: 20px;
+        }
+        #result {
+            font-size: 1.5em;
+            color: #333;
+            margin-top: 20px;
+        }
+        img {
+            margin-top: 10px;
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>ทำนายตัวเลขจากภาพด้วย AI</h1>
+    <p>กรุณาเลือกรูปภาพตัวเลข (28x28, ขาวดำ)</p>
+    
+    <input type="file" id="imageInput" accept="image/*"><br>
+    <button onclick="predict()">ทำนาย</button>
+
+    <div id="preview"></div>
+    <p id="result"></p>
+
+    <script>
+        function predict() {
+            const fileInput = document.getElementById("imageInput");
+            if (!fileInput.files[0]) {
+                alert("กรุณาเลือกรูปภาพก่อน");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("image", fileInput.files[0]);
+
+            fetch("/predict", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("result").innerText = "ผลการทำนาย: " + data.prediction;
+            })
+            .catch(err => {
+                document.getElementById("result").innerText = "เกิดข้อผิดพลาดในการทำนาย";
+            });
+
+            // แสดงตัวอย่างรูป
+            const preview = document.getElementById("preview");
+            preview.innerHTML = "";
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(fileInput.files[0]);
+            preview.appendChild(img);
+        }
+    </script>
+</body>
+</html>

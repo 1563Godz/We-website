@@ -156,7 +156,6 @@
       font-weight: 600;
       letter-spacing: 0.5px;
       outline: none;
-      user-select: none;
     }
 
     button.btn:active, a.btn:active {
@@ -336,11 +335,21 @@
       const form = document.querySelector("#reviewForm");
       const resultBox = document.querySelector("#prediction-result");
       const spinnerOverlay = document.querySelector("#loading-spinner-overlay");
+      const textarea = document.getElementById("review");
+      if (textarea) textarea.focus();
 
-      // เพิ่มเสียง
-      const dingSound = new Audio("/static/ding.mp3");
+      // เพิ่มเสียง (ป้องกัน error ถ้าไฟล์ ding.mp3 ไม่มีหรือเล่นไม่ได้)
+      let dingSound;
+      try {
+        dingSound = new Audio("/static/ding.mp3");
+      } catch (e) {
+        dingSound = null;
+      }
 
+      let isLoading = false;
       async function predictReview(review) {
+        if (isLoading) return;
+        isLoading = true;
         spinnerOverlay.classList.add("active");
         resultBox.textContent = "";
         const minDelay = 1500; // 1.5 seconds
@@ -358,17 +367,19 @@
           ]);
           resultBox.textContent = `ผลลัพธ์: ${data.prediction || "ไม่สามารถประมวลผลได้"}`;
           // เล่นเสียงติ๊งเมื่อได้ผลลัพธ์
-          dingSound.play();
+          if (dingSound) { try { dingSound.play(); } catch(e){} }
         } catch (error) {
           console.error("Error:", error);
           resultBox.textContent = "เกิดข้อผิดพลาดในการประมวลผล";
         } finally {
           spinnerOverlay.classList.remove("active");
+          isLoading = false;
         }
       }
 
       form.addEventListener("submit", function (event) {
         event.preventDefault();
+        if (isLoading) return;
         const review = form.review.value.trim();
         if (!review) {
           resultBox.textContent = "กรุณากรอกข้อความก่อน";
