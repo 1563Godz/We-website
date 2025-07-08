@@ -17,8 +17,6 @@ body {
     --accent-light: #6dd5ed;
     --card-bg: #fff;
     --card-border: #90caf9;
-    --footer-bg: #f6f7fb;
-    --footer-text: #23272f;
     --about-bg: #fff;
     --about-text: #23272f;
 }
@@ -26,14 +24,10 @@ body {
     background-color: var(--main-bg);
     color: var(--main-text);
 }
-.project-card, .about-container, .footer {
+.project-card, .about-container {
     background: var(--card-bg);
     color: var(--main-text);
     border-color: var(--card-border);
-}
-.footer {
-    background: var(--footer-bg);
-    color: var(--footer-text);
 }
 .about-container {
     background: var(--about-bg);
@@ -58,8 +52,6 @@ body.dark-mode {
     --accent-light: #274472;
     --card-bg: #232323;
     --card-border: #42a5f5;
-    --footer-bg: #232323;
-    --footer-text: #f0f0f0;
     --about-bg: #232323;
     --about-text: #f0f0f0;
 }
@@ -73,10 +65,6 @@ body.dark-mode .project-btn, body.dark-mode .project-card a {
 body.dark-mode .project-btn:hover:not(.disabled), body.dark-mode .project-card a:hover {
     background: linear-gradient(90deg, var(--accent-light) 0%, var(--accent) 100%);
     color: var(--accent);
-}
-body.dark-mode .footer {
-    background: var(--footer-bg);
-    color: var(--footer-text);
 }
 body.dark-mode .about-container {
     background: var(--about-bg);
@@ -408,16 +396,6 @@ body.dark-mode .about-container {
     }
 }
 
-/* Credits */
-.footer {
-    width: 100%;
-    color: rgb(0, 0, 0);
-    text-align: center;
-    padding: 15px;
-    position: relative; 
-    margin-top: 50px; 
-}
-
 /* result */
 #result-container {
     text-align: center;
@@ -503,7 +481,6 @@ body.dark-mode, body.dark-mode * {
 body.dark-mode .header,
 body.dark-mode .project-card,
 body.dark-mode .about-container,
-body.dark-mode .footer,
 body.dark-mode #result-container {
     background: #232323 !important;
     color: #f0f0f0 !important;
@@ -549,6 +526,6 @@ body.dark-mode .project-card a:hover {
     background: #232f3e;
     color: #90caf9;
 }
-body, .header, .project-card, .about-container, .footer, #result-container, .menu, .result-box, .theme-toggle-btn {
+body, .header, .project-card, .about-container, #result-container, .menu, .result-box, .theme-toggle-btn {
     transition: background 1.2s, color 1.2s, border-color 1.2s, box-shadow 1.2s, filter 1.2s;
 }

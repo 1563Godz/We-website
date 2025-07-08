@@ -24,6 +24,10 @@
     <p id="prediction-result">ผลลัพธ์จะแสดงตรงนี้</p>
 
     <a href="/" class="btn back-btn"><span class="material-symbols-outlined">arrow_back</span> กลับหน้าหลัก</a>
+    <!-- ปุ่มดาวน์โหลดโค้ด -->
+    <a href="{{ url_for('static', filename='code/sentences-check.zip') }}" download class="btn download-center-btn" id="download-code-btn" style="margin-left:8px;">
+      <span class="material-symbols-outlined">download</span> ดาวน์โหลดโค้ด
+    </a>
   </div>
 
   <button id="toggle-theme-btn" class="theme-toggle-btn" title="Toggle Light/Dark Mode">
@@ -156,7 +160,7 @@
       font-weight: 600;
       letter-spacing: 0.5px;
       outline: none;
-      user-select: none;
+
     }
 
     button.btn:active, a.btn:active {
@@ -323,6 +327,16 @@
         height: 32px;
         font-size: 1.1rem;
       }
+
+      .download-center-btn {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100%;
+        max-width: 100%;
+      }
     }
 
     body.theme-transition,
@@ -337,13 +351,12 @@
       const resultBox = document.querySelector("#prediction-result");
       const spinnerOverlay = document.querySelector("#loading-spinner-overlay");
 
-      // เพิ่มเสียง
       const dingSound = new Audio("/static/ding.mp3");
 
       async function predictReview(review) {
         spinnerOverlay.classList.add("active");
         resultBox.textContent = "";
-        const minDelay = 1500; // 1.5 seconds
+        const minDelay = 1500;
         const delayPromise = new Promise(resolve => setTimeout(resolve, minDelay));
         try {
           const fetchPromise = fetch("/predict", {
@@ -357,7 +370,6 @@
             delayPromise
           ]);
           resultBox.textContent = `ผลลัพธ์: ${data.prediction || "ไม่สามารถประมวลผลได้"}`;
-          // เล่นเสียงติ๊งเมื่อได้ผลลัพธ์
           dingSound.play();
         } catch (error) {
           console.error("Error:", error);
@@ -384,7 +396,6 @@
         predictReview(reviewFromURL);
       }
 
-      // Theme toggle (แบบเดียวกับ index.html)
       const btn = document.getElementById('toggle-theme-btn');
       btn.addEventListener('click', function() {
           document.body.classList.add('theme-transition');
@@ -396,7 +407,7 @@
           }
           setTimeout(() => {
               document.body.classList.remove('theme-transition');
-          }, 600); // match CSS transition duration
+          }, 600); 
       });
     });
   </script>
