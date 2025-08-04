@@ -1,3 +1,136 @@
+/* ===== GitHub Buttons Bottom Left ===== */
+.github-toggle-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 18px;
+    box-sizing: border-box;
+}
+
+.github-toggle-btn {
+    background: #23272f;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 12px rgba(79, 140, 255, 0.13);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    margin-bottom: 6px;
+}
+
+.github-toggle-btn:hover {
+    background: #444;
+    color: #ffe066;
+    transform: scale(1.12);
+}
+
+.github-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition: opacity 0.45s cubic-bezier(0.23, 1, 0.32, 1), transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.github-buttons-container.hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    pointer-events: none;
+}
+
+.github-btn {
+    background: #23272f;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 12px rgba(79, 140, 255, 0.13);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    position: relative;
+    transition: background 0.2s, color 0.2s, transform 0.2s, opacity 0.45s, transform 0.45s;
+    overflow: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.github-btn.github-btn-animating-hide {
+    opacity: 0;
+    transform: translateY(30px);
+    pointer-events: none;
+}
+
+.github-btn.github-btn-animating-show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.github-btn:hover {
+    background: #444;
+    color: #ffe066;
+    transform: scale(1.12);
+}
+
+.github-name {
+    display: none;
+    position: absolute;
+    left: 110%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #23272f;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+    margin-left: 8px;
+    z-index: 10002;
+    pointer-events: none;
+}
+
+.github-btn:hover .github-name {
+    display: block;
+}
+
+body.dark-mode .github-toggle-btn,
+body.dark-mode .github-btn {
+    background: #fff !important;
+    color: #23272f !important;
+    border: 1.5px solid #23272f;
+}
+
+body.dark-mode .github-toggle-btn:hover,
+body.dark-mode .github-btn:hover {
+    background: #ffe066 !important;
+    color: #23272f !important;
+}
+
+body.dark-mode .github-name {
+    background: #fff;
+    color: #111;
+    border: 1.5px solid #23272f;
+}
 html,
 body {
     overflow-x: hidden;
