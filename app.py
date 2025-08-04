@@ -20,6 +20,10 @@ def index():
 def sentences_check():
     return render_template('sentences-check.html')
 
+@app.route('/snake-game')
+def snake_game():
+    return render_template('snake-game.html')
+
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json()
