@@ -534,6 +534,7 @@ body.dark-mode .about-container {
 
     .menu-center {
         display: flex;
+        padding-left: 10px;
         flex-direction: row;
         justify-content: flex-start;
         gap: 15px;
@@ -635,7 +636,7 @@ body.dark-mode .about-container {
 }
 
 .theme-toggle-btn {
-    margin-bottom: 25px;
+    margin-bottom: 24px;
     margin-right: 32px;
     background: #222;
     color: #fff;
