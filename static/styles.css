@@ -1,18 +1,42 @@
 .github-btn svg {
     vertical-align: middle;
+    color: #fff;
+    transition: color 0.3s, filter 0.3s;
+}
+
+body.dark-mode .github-btn svg,
+body.dark-mode .github-toggle-btn svg {
+    color: #23272f !important;
+    filter: invert(1) brightness(1.8);
+}
+
+body.dark-mode .github-btn:hover svg,
+body.dark-mode .github-toggle-btn:hover svg {
+    color: #23272f !important;
+    filter: invert(0) brightness(1);
 }
 /* ===== GitHub Buttons Bottom Left ===== */
-.github-toggle-container {
+.github-toggle-theme-row {
     position: fixed;
     left: 0;
     bottom: 0;
+    width: 100vw;
     z-index: 10001;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    pointer-events: none;
+}
+
+.github-toggle-container {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
     padding: 18px;
     box-sizing: border-box;
+    pointer-events: auto;
 }
 
 .github-toggle-btn {
@@ -130,8 +154,8 @@ body.dark-mode .github-btn:hover {
 }
 
 body.dark-mode .github-name {
-    background: #fff;
-    color: #111;
+    background: #000000;
+    color: #ffffff;
     border: 1.5px solid #23272f;
 }
 html,
@@ -611,10 +635,8 @@ body.dark-mode .about-container {
 }
 
 .theme-toggle-btn {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 10000;
+    margin-bottom: 25px;
+    margin-right: 32px;
     background: #222;
     color: #fff;
     border: none;
@@ -628,6 +650,7 @@ body.dark-mode .about-container {
     align-items: center;
     justify-content: center;
     transition: background 0.2s, color 0.2s;
+    pointer-events: auto;
 }
 
 .theme-toggle-btn:hover {
