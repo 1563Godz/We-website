@@ -1,3 +1,6 @@
+.github-btn svg {
+    vertical-align: middle;
+}
 /* ===== GitHub Buttons Bottom Left ===== */
 .github-toggle-container {
     position: fixed;
